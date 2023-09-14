@@ -10,6 +10,7 @@ const initialState = {
   questions: [],
   //loading,error,ready,active,finished
   status: "loading",
+  index: 0,
 };
 
 function reducer(state, actions) {
@@ -20,13 +21,15 @@ function reducer(state, actions) {
       return { ...state, status: "error" };
     case "start":
       return { ...state, status: "active" };
+    case "next":
+      return { ...state, index: state.index + 1 };
     default:
       throw new Error("Action unknown");
   }
 }
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { status, questions } = state;
+  const { status, questions, index } = state;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,7 +53,9 @@ function App() {
         {status === "ready" && (
           <StartScreen num={questions.length} dispatch={dispatch} />
         )}
-        {status === "active" && <Question />}
+        {status === "active" && (
+          <Question question={questions[index]} dispatch={dispatch} />
+        )}
       </Main>
     </div>
   );
