@@ -5,12 +5,15 @@ import Loader from "./Loader";
 import Error from "./Error";
 import StartScreen from "./StartScreen";
 import Question from "./Question";
+import NextButton from "./NextButton";
 
 const initialState = {
   questions: [],
   //loading,error,ready,active,finished
   status: "loading",
   index: 0,
+  answer: null,
+  points: 0,
 };
 
 function reducer(state, actions) {
@@ -23,13 +26,25 @@ function reducer(state, actions) {
       return { ...state, status: "active" };
     case "next":
       return { ...state, index: state.index + 1 };
+    case "newAnswer":
+      const question = state.questions[state.index];
+      return {
+        ...state,
+        answer: actions.payload,
+        points:
+          actions.payload === question.correctOption
+            ? state.points + question.points
+            : state.points,
+      };
+    case "nextQuestion":
+      return { ...state, index: state.index + 1, answer: null };
     default:
       throw new Error("Action unknown");
   }
 }
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { status, questions, index } = state;
+  const { status, questions, index, answer } = state;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,7 +69,14 @@ function App() {
           <StartScreen num={questions.length} dispatch={dispatch} />
         )}
         {status === "active" && (
-          <Question question={questions[index]} dispatch={dispatch} />
+          <>
+            <Question
+              question={questions[index]}
+              answer={answer}
+              dispatch={dispatch}
+            />
+            <NextButton dispatch={dispatch} answer={answer} />
+          </>
         )}
       </Main>
     </div>
