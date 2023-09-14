@@ -66,7 +66,9 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/questions");
+        const res = await fetch(
+          "https://quiz-react-akash.onrender.com/questions"
+        );
         const data = await res.json();
         // console.log(data);
         dispatch({ type: "dataReceived", payload: data });
