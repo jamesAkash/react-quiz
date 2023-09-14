@@ -26,7 +26,10 @@ body {
   min-height: 100vh;
   color: var(--color-light);
   background-color: var(--color-darkest);
-  padding: 3.2rem;
+  /* padding: 3.2rem; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .app {
@@ -34,18 +37,22 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .main {
-  width: 50rem;
+  max-width: 50rem;
+  /* width: 100%; */
+  padding: 0 20px;
 }
 
 .app-header {
-  width: 66rem;
+  max-width: 66rem;
   margin-bottom: 4rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 }
 
 .error {
@@ -63,7 +70,12 @@ img {
 
 h1 {
   font-family: "Codystar";
-  font-size: 5.6rem;
+  font-size: clamp(2.5rem, 5.5vw, 5.6rem);
+  text-align: center;
+}
+
+.logo-react {
+  width: clamp(4.5rem, 3.5vw, 5.6rem);
 }
 
 h2 {
